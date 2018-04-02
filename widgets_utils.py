@@ -92,12 +92,13 @@ def widget_typeBox2(title, options, style=title_style, layout=typeLayout):
                       style=style,
                       layout=layout)
 
-def widget_typeBox(title, options, style=title_style, layout=typeLayout):
+def widget_typeBox(title, options, style=title_style, layout=typeLayout, disabled=False):
     return w.Dropdown(options=options,
                       value=options[0],
                       description=title,
                       style=style,
-                      layout=layout)
+                      layout=layout,
+                      disabled=disabled)
 
 def widget_group(title, widgets, layout=smallGroup):
     h = widget_header(title, bold=False, size=4)
