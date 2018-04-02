@@ -109,3 +109,12 @@ def widget_flag(title):
     description=title,
     style = {'description_width': 'initial'},
 )
+
+def create_tab(window_requirements, window_paretto, window_priority):
+    tab_titles = ['Требования', 'Множество структур Паретто', 'Приоритетное требование']
+    children = [window_requirements, window_paretto, window_priority]
+    tab = w.Tab()
+    tab.children = children
+    for i in range(len(children)):
+        tab.set_title(i, tab_titles[i])
+    return tab
