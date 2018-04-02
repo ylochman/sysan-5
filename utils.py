@@ -1,119 +1,10 @@
-import ipywidgets as w
-from IPython.display import display
-
-
-####################################################################################################
-# Widgets Utilities
-####################################################################################################
-
-hcolor='#0969A2'
-textLayout = w.Layout(width='180px', height='30px')
-
-rangeLayout = w.Layout(width='400px', justify_content='flex-start')
-typeLayout = w.Layout(width='400px', justify_content='center')
-
-smallGroup = w.Layout(width='450px', border='solid 0px', margin='0px',
-                      justify_content='center', align_items='center')
-
-bigGroup = w.Layout(width='500px', border='solid 0px', height='530px', padding='20px',
-                    justify_content='space-around', align_items='center')
-
-allLayout = w.Layout(border='solid 1px',  padding='20px',
-                    justify_content='center', align_items='stretch')
-
-title_style = {'description_width': 'initial'}
-
-facefont = 'Arial'
-
-
-def widget_header(title, size=6, bold=True, color='#0969A2', face=facefont):
-    attr = "<div align='center'><font size='"+str(size)+"px' face='"+face+"' color='"+hcolor+"'>"
-    attr_closing = "</font></div>"
-    if bold:
-        attr += "<b>"
-        attr_closing = "</b>" + attr_closing
-
-    return w.HTML(value=attr+title+attr_closing)
-
-def widget_intFrom(value, layout=textLayout):
-    return w.BoundedIntText(value=value,
-                            step=1,
-                            description='від',
-                            disabled=False,
-                            layout=layout)
-
-def widget_intTo(value, layout=textLayout):
-    return w.BoundedIntText(value=value,
-                            step=1,
-                            description='до',
-                            disabled=False,
-                            layout=layout)
-
-def widget_range(valueFrom, valueTo):
-    return w.HBox([widget_intFrom(valueFrom), widget_intTo(valueTo)])
-
-def widget_rangeBoxInt(title, valueFrom, valueTo, style=title_style, layout=rangeLayout):
-    return w.FloatRangeSlider(value=[valueFrom, valueTo],
-                            min=valueFrom,
-                            max=valueTo,
-                            step=1,
-                            description=title,
-                            disabled=False,
-                            continuous_update=False,
-                            orientation='horizontal',
-                            readout=True,
-                            readout_format='d',
-                            style=style,
-                            layout=layout)
-
-def widget_rangeBoxFloat(title, valueFrom, valueTo, style=title_style, layout=rangeLayout):
-    return w.FloatRangeSlider(value=[valueFrom, valueTo],
-                            min=valueFrom,
-                            max=valueTo,
-                            step=0.1,
-                            description=title,
-                            disabled=False,
-                            continuous_update=False,
-                            orientation='horizontal',
-                            readout=True,
-                            readout_format='.1f',
-                            style=style,
-                            layout=layout)
-
-def widget_rangeBox(title, valueFrom, valueTo, style=title_style, layout=rangeLayout):
-    return w.HBox([w.Label(value=title, style=style), widget_range(valueFrom, valueTo)], layout=layout)
-
-def widget_typeBox2(title, options, style=title_style, layout=typeLayout):
-    return w.Dropdown(options= dict(zip(options, range(len(options)))),
-                      value=0,
-                      description=title,
-                      style=style,
-                      layout=layout)
-
-def widget_typeBox(title, options, style=title_style, layout=typeLayout):
-    return w.Dropdown(options=options,
-                      value=options[0],
-                      description=title,
-                      style=style,
-                      layout=layout)
-
-def widget_group(title, widgets, layout=smallGroup):
-    h = widget_header(title, bold=False, size=4)
-    return w.VBox([h, *widgets], layout=layout)
-
-def widget_flag(title):
-    return w.Checkbox(
-    value=False,
-    description=title,
-    style = {'description_width': 'initial'},
-)
-
-
-
 ####################################################################################################
 # Data Utilities
 ####################################################################################################
 
+#######################
+# Class PART
+#######################
 class Part():
     def __init__(self, name, price, weight):
         self.name = name
@@ -182,7 +73,9 @@ class Accumulator(Part):
         self.take_off_weight = take_off_weight
         self.height = height
 
-        
+##########################
+# For searching in parts
+##########################        
 def get_keys(parts):
     return set(map(lambda part: list(part.keys())[0], parts))
 
@@ -198,3 +91,29 @@ def get_part_attr(parts, part_name, attr_name):
 def get_boundaries(parts, part_name, attr_name):
     values = get_attr(filter_parts(parts, part_name), attr_name)
     return (min(values), max(values))
+
+#################################
+# For searching in combinations
+#################################
+def get_comb_attr(combinations, part_name, attr_name):
+    return [comb[part_name][attr_name] for comb in combinations]
+
+
+#######################
+# Final calculations
+#######################
+def get_price(parts, body, engine, propellers, cpu, sensor, software, camera, accumulator):
+    names = list(map(lambda part: list(part.values())[0]['name'], parts))
+    price = 0
+    for name in [body, engine, propellers, cpu, sensor, software, camera, accumulator]:
+        assert name in names, '{} is not a valid name'.format(name)
+        price += get_attr(list(filter(lambda part: list(part.values())[0]['name'] == name, parts)), 'price')[0]
+    return price
+
+def get_weight(parts, body, engine, propellers, cpu, sensor, software, camera, accumulator):
+    names = list(map(lambda part: list(part.values())[0]['name'], parts))
+    weight = 0
+    for name in [body, engine, propellers, cpu, sensor, software, camera, accumulator]:
+        assert name in names, '{} is not a valid name'.format(name)
+        weight += get_attr(list(filter(lambda part: list(part.values())[0]['name'] == name, parts)), 'weight')[0]
+    return weight

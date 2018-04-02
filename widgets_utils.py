@@ -1,3 +1,6 @@
+####################################################################################################
+# Widget Utilities
+####################################################################################################
 import ipywidgets as w
 from IPython.display import display
 
@@ -15,6 +18,9 @@ bigGroup = w.Layout(width='500px', border='solid 0px', height='530px', padding='
                     justify_content='space-around', align_items='center')
 
 allLayout = w.Layout(border='solid 1px',  padding='20px',
+                    justify_content='center', align_items='stretch')
+
+allLayout_without_border = w.Layout(border='solid 0px',  padding='20px',
                     justify_content='center', align_items='stretch')
 
 title_style = {'description_width': 'initial'}
