@@ -112,7 +112,7 @@ def widget_flag(title):
 )
 
 def create_tab(window_requirements, window_paretto, window_priority):
-    tab_titles = ['Требования', 'Множество структур Паретто', 'Приоритетное требование']
+    tab_titles = ['Требования', 'Множество структур Паретто', 'Приоритетная структура']
     children = [window_requirements, window_paretto, window_priority]
     tab = w.Tab()
     tab.children = children
