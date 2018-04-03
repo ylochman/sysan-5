@@ -259,30 +259,40 @@ def get_priority_structure(combinations, i=0):
     return all_widgets
 
 def visualize_structure(b, Pareto_structures, i):
-    
-    def simplify_data_structure(combinations):
-        new_combinations = []
-        for combination in combinations:
-            new_combination = {}
-            for element in combination:
-                new_combination[list(element.keys())[0]] = list(element.values())[0]
-            new_combinations.append(new_combination)
-        return new_combinations
+    if len(Pareto_structures) == 0:
+        all_widgets = w.Label('К сожалению, нет структуры, которая бы удовлетворяла текущие требования.',
+                       layout=allLayout_without_border)
+        window_paretto = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
+            widget_header('Дрон. Множество структур Паретто', bold=False, size=5, face=facefont),
+            widget_header('(мощность множества: {})'.format(len(Pareto_structures)),
+                          bold=False, size=5, face=facefont),
+            all_widgets], layout=allLayout)
 
-    simplified_Pareto_structures = simplify_data_structure(Pareto_structures)
-    all_widgets = get_Pareto_structures(simplified_Pareto_structures)
-    window_paretto = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
-        widget_header('Дрон. Множество структур Паретто', bold=False, size=5, face=facefont),
-        widget_header('(мощность множества: {})'.format(len(Pareto_structures)),
-                      bold=False, size=5, face=facefont),
-        all_widgets], layout=allLayout)
-    
-    np.random.seed(0)
-    i = np.random.randint(0, len(simplified_Pareto_structures))
-    all_widgets = get_priority_structure(simplified_Pareto_structures, i)
-    window_priority = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
-        widget_header('Дрон. Приоритетное требование', bold=False, size=5, face=facefont),
-        all_widgets], layout=allLayout)
+        window_priority = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
+            widget_header('Дрон. Приоритетное требование', bold=False, size=5, face=facefont),
+            all_widgets], layout=allLayout)
+    else:
+        def simplify_data_structure(combinations):
+            new_combinations = []
+            for combination in combinations:
+                new_combination = {}
+                for element in combination:
+                    new_combination[list(element.keys())[0]] = list(element.values())[0]
+                new_combinations.append(new_combination)
+            return new_combinations
+
+        simplified_Pareto_structures = simplify_data_structure(Pareto_structures)
+        all_widgets = get_Pareto_structures(simplified_Pareto_structures)
+        window_paretto = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
+            widget_header('Дрон. Множество структур Паретто', bold=False, size=5, face=facefont),
+            widget_header('(мощность множества: {})'.format(len(Pareto_structures)),
+                          bold=False, size=5, face=facefont),
+            all_widgets], layout=allLayout)
+
+        all_widgets = get_priority_structure(simplified_Pareto_structures)
+        window_priority = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
+            widget_header('Дрон. Приоритетное требование', bold=False, size=5, face=facefont),
+            all_widgets], layout=allLayout)
     
     tab = create_tab(window_requirements, window_paretto, window_priority)
     clear_output()
