@@ -282,21 +282,22 @@ def visualize_structure(b, Pareto_structures, i):
             return new_combinations
 
         simplified_Pareto_structures = simplify_data_structure(Pareto_structures)
-        all_widgets = get_Pareto_structures(simplified_Pareto_structures)
-        window_paretto = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
-            widget_header('Дрон. Множество структур Паретто', bold=False, size=5, face=facefont),
-            widget_header('(мощность множества: {})'.format(len(Pareto_structures)),
-                          bold=False, size=5, face=facefont),
-            all_widgets], layout=allLayout)
+        print(simplified_Pareto_structures)
+#         all_widgets = get_Pareto_structures(simplified_Pareto_structures)
+#         window_paretto = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
+#             widget_header('Дрон. Множество структур Паретто', bold=False, size=5, face=facefont),
+#             widget_header('(мощность множества: {})'.format(len(Pareto_structures)),
+#                           bold=False, size=5, face=facefont),
+#             all_widgets], layout=allLayout)
 
-        all_widgets = get_priority_structure(simplified_Pareto_structures)
-        window_priority = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
-            widget_header('Дрон. Приоритетное требование', bold=False, size=5, face=facefont),
-            all_widgets], layout=allLayout)
+#         all_widgets = get_priority_structure(simplified_Pareto_structures)
+#         window_priority = w.VBox([widget_header('Lab 5', bold=False, face=facefont),
+#             widget_header('Дрон. Приоритетная структура', bold=False, size=5, face=facefont),
+#             all_widgets], layout=allLayout)
     
-    tab = create_tab(window_requirements, window_paretto, window_priority)
-    clear_output()
-    display(tab)
+#     tab = create_tab(window_requirements, window_paretto, window_priority)
+#     clear_output()
+#     display(tab)
     
 
 # Visualization
@@ -359,8 +360,8 @@ def get_main_window_requirements(parts):
     w5_widgets = [
     #     widget_rangeBox('Общая стоимость', 0, 1000),
     #     widget_rangeBox('Общий вес', 0, 1000)
-         widget_rangeBoxInt('Стоимость, грн', 0, 30000),
-         widget_rangeBoxInt('Общий вес, г', 0, 1000),
+         widget_rangeBoxInt('Стоимость, грн', 15000, 30000),
+         widget_rangeBoxInt('Общий вес, г', 800, 1000),
     ]
     layout = w.Layout(width='480px', border='solid 0px', margin='10px',
                       justify_content='center', align_items='center')
